@@ -1,0 +1,7 @@
+{
+  "name": "Lumina Creative Studio",
+  "description": "A high-end AI-powered suite for photo and video editing using Google Gemini and Veo models.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
