@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -107,6 +108,14 @@ app.post('/api/ai-chat', async (req, res) => {
     return res.status(500).json({ error: 'AI request failed' });
   }
 });
+
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '..', 'dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
+  });
+}
 
 if (require.main === module) {
   app.listen(PORT, () => {
