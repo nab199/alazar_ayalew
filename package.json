@@ -7,16 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "node server/index.js",
-    "start": "node server/index.js",
+    "server": "node server/index.js",  // Keep if you need backend locally
     "test": "jest --runInBand"
   },
   "dependencies": {
     "@google/genai": "^1.34.0",
-    "body-parser": "^2.2.1",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "nodemailer": "^6.9.4",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
