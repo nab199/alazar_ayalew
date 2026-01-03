@@ -51,17 +51,32 @@
   "imports": {
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+    "react": "https://esm.sh/react@^19.2.3"
   }
 }
 </script>
+<link rel="preload" as="image" href="/photo_2024-08-11_21-23-48.jpg">
 <link rel="stylesheet" href="/index.css">
 </head>
 <body>
+    <a class="skip-link" href="#home">Skip to main content</a>
     <div id="root"></div>
-    <!-- TikTok Embed Script -->
-    <script async src="https://www.tiktok.com/embed.js"></script>
+    <!-- TikTok Embed Script (lazy-load after page interaction) -->
+    <script>
+      // Lazy load TikTok embed only after user interaction to reduce initial load
+      let _tiktokLoaded = false;
+      const loadTikTok = () => {
+        if (_tiktokLoaded) return;
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.tiktok.com/embed.js';
+        document.body.appendChild(s);
+        _tiktokLoaded = true;
+      };
+      ['scroll','mousemove','touchstart','keydown'].forEach(evt => {
+        window.addEventListener(evt, loadTikTok, { once: true, passive: true });
+      });
+    </script>
 <script type="module" src="/index.tsx"></script>
 </body>
 </html>

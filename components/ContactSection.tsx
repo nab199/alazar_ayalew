@@ -23,16 +23,31 @@ export const ContactSection: React.FC = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
       setIsSubmitting(true);
-      setTimeout(() => {
-        setIsSubmitting(false);
+      try {
+        const apiBase = (import.meta.env.VITE_CONTACT_API_URL as string) || 'http://localhost:3001';
+        const res = await fetch(`${apiBase}/api/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body?.error || 'Server error');
+        }
+
         setIsSubmitted(true);
         setFormData({ name: '', email: '', message: '' });
-      }, 1500);
+      } catch (err:any) {
+        setErrors({ form: err.message || 'Failed to send. Try again later.' });
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -116,7 +131,7 @@ export const ContactSection: React.FC = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {errors.form && <p className="text-red-500 text-sm font-bold">{errors.form}</p>}                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-3">Full Identity</label>
                     <input

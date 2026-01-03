@@ -1,0 +1,36 @@
+/* Basic accessibility and skip-link styles */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus,
+.skip-link:active {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: #111827;
+  color: #fff;
+  border-radius: 8px;
+  z-index: 9999;
+}
+
+:focus {
+  outline: 3px solid rgba(59,130,246,0.9);
+  outline-offset: 3px;
+}
+
+/* Visually clear focus for keyboard users */
+:focus:not(:focus-visible) { outline: none; }
+
+/* light improvements for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

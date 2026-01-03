@@ -22,8 +22,26 @@ export const AIConsultant: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const response = await chatWithConsultant(userMsg, []);
-      setMessages(prev => [...prev, { role: 'model', text: response || 'I apologize, something went wrong.' }]);
+      // Prefer server-side AI endpoint if configured (avoid exposing API keys in client bundles)
+      const aiApi = (import.meta.env.VITE_AI_API_URL as string) || '';
+      if (aiApi) {
+        const res = await fetch(`${aiApi}/api/ai-chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userMsg })
+        });
+        if (res.ok) {
+          const body = await res.json().catch(() => null);
+          setMessages(prev => [...prev, { role: 'model', text: body?.text || 'No response' }]);
+        } else {
+          setMessages(prev => [...prev, { role: 'model', text: "I'm having trouble connecting to the AI server." }]);
+        }
+      } else {
+        // Fallback: client-side call using services (note: this exposes API key if used)
+        console.warn('VITE_AI_API_URL not set — calling Gemini from the client (not recommended for production).');
+        const response = await chatWithConsultant(userMsg, []);
+        setMessages(prev => [...prev, { role: 'model', text: response || 'I apologize, something went wrong.' }]);
+      }
     } catch (e) {
       setMessages(prev => [...prev, { role: 'model', text: "I'm having trouble connecting right now." }]);
     } finally {

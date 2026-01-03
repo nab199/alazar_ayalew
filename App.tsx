@@ -23,7 +23,7 @@ const App: React.FC = () => {
     { name: 'YouTube', url: 'https://www.youtube.com/@alazarproethiopian9545', color: 'hover:text-red-500', icon: <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/> }
   ];
 
-  const profilePhoto = "https://files.oaiusercontent.com/file-m5I5k0mXzO8lI8z0o2jO8lI8?se=2024-10-27T14%3A22%3A10Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D0f3e0f9c-0f0e-4f0e-8f0e-0f0e0f0e0f0e.jpg&sig=m2hD0/jR8W3K09m/H9T39W4V30A/G/Y09M9O9T39W4V3="; // placeholder link derived from context
+  const profilePhoto = "/photo_2024-08-11_21-23-48.jpg"; // Put your photo file in the project's `public/` folder (public/photo_2024-08-11_21-23-48.jpg)
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 selection:bg-blue-500/30 font-sans">
@@ -70,18 +70,32 @@ const App: React.FC = () => {
 
           <div className="space-y-12 max-w-6xl">
             <div className="flex flex-col items-center gap-10">
-              {/* Profile Image with Cinematic Effects */}
+              {/* Profile Image with Cinematic Effects (responsive sources, fallback, preload) */}
               <div className="relative group animate-fade-in">
                 <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-700" />
                 <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-white/5 overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.05] hover:rotate-2">
-                  <img 
-                    src="https://files.oaiusercontent.com/file-m5I5k0mXzO8lI8z0o2jO8lI8?se=2024-10-27T14%3A22%3A10Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D0f3e0f9c-0f0e-4f0e-8f0e-0f0e0f0e0f0e.jpg&sig=m2hD0/jR8W3K09m/H9T39W4V30A/G/Y09M9O9T39W4V3=" 
-                    alt="Alazar Ayalew" 
-                    className="w-full h-full object-cover"
-                  />
+                  <picture>
+                    <source srcSet="/photo_2024-08-11_21-23-48.avif 1x, /photo_2024-08-11_21-23-48@2x.avif 2x" type="image/avif" />
+                    <source srcSet="/photo_2024-08-11_21-23-48.webp 1x, /photo_2024-08-11_21-23-48@2x.webp 2x" type="image/webp" />
+                    <img 
+                      src={profilePhoto}
+                      alt="Alazar Ayalew" 
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                    />
+                  </picture>
                 </div>
-                <div className="absolute -bottom-4 -right-4 p-4 glass-effect rounded-2xl border border-white/10 shadow-xl animate-bounce" style={{ animationDuration: '3s' }}>
-                  <svg className="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21l-8.228-6.171 1.428-1.428L12 17.143l6.8-5.742 1.428 1.428L12 21zm0-4.286l-8.228-6.171 1.428-1.428L12 12.857l6.8-5.742 1.428 1.428L12 16.714zM12 12.429l-8.228-6.171 1.428-1.428L12 8.571l6.8-5.742 1.428 1.428L12 12.429z"/></svg>
+
+                {/* Director's Photos placeholder */}
+                <div className="w-full mt-6 flex flex-col items-center">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-3">Director's Photos</h4>
+                  <div className="flex gap-4 items-center">
+                    {[1,2,3].map((i) => (
+                      <div key={i} className="w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-white/5 bg-slate-900 shadow-lg">
+                        <img src={profilePhoto} alt={`Photo ${i}`} className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 

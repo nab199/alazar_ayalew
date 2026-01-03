@@ -160,7 +160,7 @@ export const PortfolioGrid: React.FC = () => {
       </div>
 
       {selectedCategory && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 md:p-6 lg:p-12">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 md:p-6 lg:p-12" role="dialog" aria-modal="true" aria-label={`${activeTab} gallery for ${selectedCategory}`}>
           <div className="absolute inset-0 bg-black/98 backdrop-blur-3xl" onClick={closeGallery} />
           
           <div className="relative w-full max-w-7xl h-full flex flex-col items-center justify-center">
@@ -171,6 +171,8 @@ export const PortfolioGrid: React.FC = () => {
                  <span className="text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">{activeIndex + 1} of {getItemsForCategory(selectedCategory).length}</span>
               </div>
               <button 
+                ref={(el)=> el && (el as HTMLButtonElement).focus()}
+                aria-label="Close gallery"
                 onClick={closeGallery}
                 className="pointer-events-auto p-3 bg-white/5 rounded-full border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all active:scale-95"
               >
@@ -209,18 +211,20 @@ export const PortfolioGrid: React.FC = () => {
                   <div className="relative w-full max-w-5xl aspect-video rounded-2xl md:rounded-[40px] overflow-hidden shadow-3xl bg-slate-900 border border-white/5">
                     <video 
                       ref={videoRef}
-                      src={getItemsForCategory(selectedCategory)[activeIndex].videoUrl} 
+                      src={getItemsForCategory(selectedCategory)[activeIndex].videoUrl || undefined} 
                       className="w-full h-full object-contain"
                       controls
                       autoPlay
                       playsInline
+                      preload="none"
                     />
                   </div>
                 ) : (
                   <img 
-                    src={getItemsForCategory(selectedCategory)[activeIndex].imageUrl} 
+                    src={getItemsForCategory(selectedCategory)[activeIndex].imageUrl}
+                    srcSet={`${getItemsForCategory(selectedCategory)[activeIndex].imageUrl} 1x, ${getItemsForCategory(selectedCategory)[activeIndex].imageUrl}?dpr=2 2x`}
                     className="max-h-[85vh] max-w-full rounded-2xl md:rounded-[40px] shadow-3xl object-contain bg-slate-900 border border-white/5"
-                    alt="Gallery visual"
+                    alt={getItemsForCategory(selectedCategory)[activeIndex].title}
                   />
                 )}
               </div>

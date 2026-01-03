@@ -1,4 +1,6 @@
 
+// NOTE: This file contains server-side Gemini client usage. Do NOT import or call from browser bundles in production.
+// If you need AI in the frontend, create a secure server endpoint that calls these functions and returns results.
 import { GoogleGenAI } from "@google/genai";
 
 // Alazar Pro Studio Services Logic
