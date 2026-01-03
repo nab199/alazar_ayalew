@@ -18,6 +18,23 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, '.'),
         }
+      },
+      // ADD THIS PREVIEW SECTION
+      preview: {
+        port: 3000,
+        host: '0.0.0.0',
+        allowedhosts: [
+          'alazar-crv7.onrender.com',  // Your Render hostname
+          'localhost',
+          '0.0.0.0',
+          '127.0.0.1'
+        ]
+      },
+      // Also add build configuration
+      build: {
+        outDir: 'dist',
+        emptyOutDir: true,
+        sourcemap: false,
       }
     };
 });
