@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "node server/index.js",  // Keep if you need backend locally
     "test": "jest --runInBand"
   },
   "dependencies": {
